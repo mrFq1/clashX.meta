@@ -23,8 +23,10 @@ enum ClashProxyType: String, Codable {
     case snell = "Snell"
     case trojan = "Trojan"
     case relay = "Relay"
+    case hysteria = "Hysteria"
+    case vless = "Vless"
     case unknown = "Unknown"
-
+    
     static let proxyGroups: [ClashProxyType] = [.select, .urltest, .fallback, .loadBalance]
 
     var isAutoGroup: Bool {
