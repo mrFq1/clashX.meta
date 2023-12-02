@@ -326,6 +326,8 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 					
 					self.helperStatusTimer?.fire()
 				}.disposed(by: disposeBag)
+		} else {
+			helperStatusTimer?.fire()
 		}
 		
 		Logger.log("Fire helperStatusTimer")
