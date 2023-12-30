@@ -91,6 +91,8 @@ class MetaTask: NSObject {
 			
 			log("set pipe")
 			self.proc.arguments = args
+			self.proc.qualityOfService = .userInitiated
+			
 			let pipe = Pipe()
 			var logs = [String]()
 			
