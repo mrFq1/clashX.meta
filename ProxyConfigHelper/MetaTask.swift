@@ -54,9 +54,7 @@ class MetaTask: NSObject {
 			timer = nil
 			resultReturned = true
 			logStopped = true
-			DispatchQueue.main.async {
-				result(re)
-			}
+			result(re)
 		}
 		
 		var args = [
@@ -73,7 +71,6 @@ class MetaTask: NSObject {
 		
 		killOldProc()
 		log("killOldProc finish")
-		//        procQueue.async {
 		do {
 			if let info = self.test(confPath, confFilePath: confFilePath) {
 				log("Test meta config failed.")
@@ -243,7 +240,6 @@ class MetaTask: NSObject {
 			self.log("Start meta error")
 			returnResult("Start meta error, \(error.localizedDescription).")
 		}
-		//        }
 	}
 	
 	@objc func stop() {
