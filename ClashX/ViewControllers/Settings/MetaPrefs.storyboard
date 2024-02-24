@@ -9,35 +9,58 @@
         <scene sceneID="PEd-7d-5j0">
             <objects>
                 <viewController id="bU7-R8-ocO" customClass="MetaPrefsViewController" customModule="ClashX_Meta" customModuleProvider="target" sceneMemberID="viewController">
-                    <view key="view" id="tOy-S4-hL0">
-                        <rect key="frame" x="0.0" y="0.0" width="472" height="338"/>
+                    <view key="view" misplaced="YES" id="tOy-S4-hL0">
+                        <rect key="frame" x="0.0" y="0.0" width="472" height="354"/>
                         <autoresizingMask key="autoresizingMask"/>
                         <subviews>
                             <stackView distribution="fill" orientation="vertical" alignment="leading" spacing="20" horizontalStackHuggingPriority="249.99998474121094" verticalStackHuggingPriority="249.99998474121094" detachesHiddenViews="YES" translatesAutoresizingMaskIntoConstraints="NO" id="0gk-BB-Gdf">
-                                <rect key="frame" x="20" y="20" width="432" height="298"/>
+                                <rect key="frame" x="20" y="20" width="432" height="324"/>
                                 <subviews>
                                     <box borderType="line" title="Meta Setting" translatesAutoresizingMaskIntoConstraints="NO" id="Lcd-RJ-vG1">
-                                        <rect key="frame" x="-3" y="242" width="438" height="56"/>
+                                        <rect key="frame" x="-3" y="242" width="438" height="82"/>
                                         <view key="contentView" id="U05-m1-3dj">
-                                            <rect key="frame" x="4" y="5" width="430" height="36"/>
+                                            <rect key="frame" x="4" y="5" width="430" height="62"/>
                                             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                             <subviews>
-                                                <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="Wig-IX-1hV">
-                                                    <rect key="frame" x="18" y="9" width="135" height="18"/>
-                                                    <buttonCell key="cell" type="check" title="Hide unselectable" bezelStyle="regularSquare" imagePosition="left" allowsMixedState="YES" inset="2" id="Koj-ew-y0I">
-                                                        <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
-                                                        <font key="font" metaFont="system"/>
-                                                    </buttonCell>
-                                                    <connections>
-                                                        <action selector="hideUnselectable:" target="bU7-R8-ocO" id="UQS-Tg-9Uv"/>
-                                                    </connections>
-                                                </button>
+                                                <stackView distribution="fill" orientation="vertical" alignment="leading" spacing="10" horizontalStackHuggingPriority="249.99998474121094" verticalStackHuggingPriority="249.99998474121094" detachesHiddenViews="YES" translatesAutoresizingMaskIntoConstraints="NO" id="hHh-PD-j7L">
+                                                    <rect key="frame" x="20" y="10" width="286" height="42"/>
+                                                    <subviews>
+                                                        <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="Wig-IX-1hV">
+                                                            <rect key="frame" x="-2" y="25" width="135" height="18"/>
+                                                            <buttonCell key="cell" type="check" title="Hide unselectable" bezelStyle="regularSquare" imagePosition="left" allowsMixedState="YES" inset="2" id="Koj-ew-y0I">
+                                                                <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
+                                                                <font key="font" metaFont="system"/>
+                                                            </buttonCell>
+                                                            <connections>
+                                                                <action selector="hideUnselectable:" target="bU7-R8-ocO" id="UQS-Tg-9Uv"/>
+                                                            </connections>
+                                                        </button>
+                                                        <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="ec5-t6-9Sd">
+                                                            <rect key="frame" x="-2" y="-1" width="288" height="18"/>
+                                                            <buttonCell key="cell" type="check" title="Auto switch to DIRECT when system sleeps" bezelStyle="regularSquare" imagePosition="left" state="on" inset="2" id="Ty6-Ye-lO5">
+                                                                <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
+                                                                <font key="font" metaFont="system"/>
+                                                            </buttonCell>
+                                                            <connections>
+                                                                <action selector="autoSleepMode:" target="bU7-R8-ocO" id="jp9-SH-bJe"/>
+                                                            </connections>
+                                                        </button>
+                                                    </subviews>
+                                                    <visibilityPriorities>
+                                                        <integer value="1000"/>
+                                                        <integer value="1000"/>
+                                                    </visibilityPriorities>
+                                                    <customSpacing>
+                                                        <real value="3.4028234663852886e+38"/>
+                                                        <real value="3.4028234663852886e+38"/>
+                                                    </customSpacing>
+                                                </stackView>
                                             </subviews>
                                             <constraints>
-                                                <constraint firstItem="Wig-IX-1hV" firstAttribute="leading" secondItem="U05-m1-3dj" secondAttribute="leading" constant="20" symbolic="YES" id="0g8-Ft-49X"/>
-                                                <constraint firstItem="Wig-IX-1hV" firstAttribute="top" secondItem="U05-m1-3dj" secondAttribute="top" constant="10" id="AVb-dh-ckc"/>
-                                                <constraint firstAttribute="bottom" secondItem="Wig-IX-1hV" secondAttribute="bottom" constant="10" id="VDC-ux-IGa"/>
-                                                <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="Wig-IX-1hV" secondAttribute="trailing" constant="20" symbolic="YES" id="qZp-1P-0L4"/>
+                                                <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="hHh-PD-j7L" secondAttribute="trailing" constant="20" symbolic="YES" id="5ww-Xz-naQ"/>
+                                                <constraint firstAttribute="bottom" secondItem="hHh-PD-j7L" secondAttribute="bottom" constant="10" id="L7L-Gj-zLi"/>
+                                                <constraint firstItem="hHh-PD-j7L" firstAttribute="top" secondItem="U05-m1-3dj" secondAttribute="top" constant="10" id="XYT-SS-GId"/>
+                                                <constraint firstItem="hHh-PD-j7L" firstAttribute="leading" secondItem="U05-m1-3dj" secondAttribute="leading" constant="20" symbolic="YES" id="wzU-jf-uPb"/>
                                             </constraints>
                                         </view>
                                     </box>
@@ -299,6 +322,7 @@
                     </view>
                     <connections>
                         <outlet property="alphaVersionTextField" destination="yKt-RT-uZL" id="A2m-kO-WMQ"/>
+                        <outlet property="autoSleepModeButton" destination="ec5-t6-9Sd" id="EPv-6T-BSo"/>
                         <outlet property="hideUnselectableButton" destination="Wig-IX-1hV" id="9dI-B3-Tbe"/>
                         <outlet property="showAlphaButton" destination="UWj-Su-skJ" id="v29-ZT-4mA"/>
                         <outlet property="updateButton" destination="SRr-f9-XRY" id="suh-eD-eh8"/>

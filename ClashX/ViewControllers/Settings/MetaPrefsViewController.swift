@@ -28,6 +28,14 @@ class MetaPrefsViewController: NSViewController {
 		MenuItemFactory.hideUnselectable = newState.rawValue
 	}
 	
+	
+	@IBOutlet var autoSleepModeButton: NSButton!
+	@IBAction func autoSleepMode(_ sender: NSButton) {
+		var newState: NSControl.StateValue = sender.state == .on ? .off : .on
+		sender.state = newState
+		ConfigManager.autoSleepMode = newState == .on
+	}
+	
 	// Dashboard
 	@IBOutlet var useSwiftuiButton: NSButton!
 	@IBOutlet var useYacdButton: NSButton!
