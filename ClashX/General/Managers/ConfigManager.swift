@@ -205,4 +205,11 @@ extension ConfigManager {
 			UserDefaults.standard.set(useAlphaCore, forKey: "useAlphaCore")
 		}
 	}
+	
+	
+	static var autoSleepMode: Bool = UserDefaults.standard.object(forKey: "autoSleepMode") as? Bool ?? false {
+		didSet {
+			UserDefaults.standard.set(autoSleepMode, forKey: "autoSleepMode")
+		}
+	}
 }

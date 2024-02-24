@@ -66,6 +66,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 	
 	var helperStatusTimer: Timer?
 	var updateGeoTimer: Timer?
+	var sleepSavedOutBoundMode: ClashProxyMode?
 
     func applicationWillFinishLaunching(_ notification: Notification) {
         Logger.log("applicationWillFinishLaunching")
@@ -437,6 +438,11 @@ class AppDelegate: NSObject, NSApplicationDelegate {
                     self?.resetStreamApi()
                 }
             }.disposed(by: disposeBag)
+		
+		
+		let notificationCenter = NSWorkspace.shared.notificationCenter
+		notificationCenter.addObserver(self, selector: #selector(AppDelegate.systemWillSleep), name: NSWorkspace.willSleepNotification, object: nil)
+		notificationCenter.addObserver(self, selector: #selector(AppDelegate.systemDidWake), name: NSWorkspace.didWakeNotification, object: nil)
     }
 
     func updateProxyList(withMenus menus: [NSMenuItem]) {
@@ -1139,6 +1145,35 @@ extension AppDelegate {
 			.postNotificationAlert(title: "Update Tips", info: info)
 	}
 	
+}
+
+// MARK: System Sleep / Wake
+extension AppDelegate {
+	@objc func systemWillSleep() {
+		guard ConfigManager.shared.isRunning,
+			  ConfigManager.autoSleepMode,
+			  let mode = ConfigManager.shared.currentConfig?.mode,
+			  mode != .direct else { return }
+		
+		sleepSavedOutBoundMode = mode
+		ApiRequest.updateOutBoundMode(mode: .direct) {
+			[weak self] _ in
+			ConnectionManager.closeAllConnection()
+			self?.syncConfig()
+		}
+	}
+	
+	@objc func systemDidWake() {
+		guard ConfigManager.shared.isRunning,
+			  ConfigManager.autoSleepMode,
+			  let mode = sleepSavedOutBoundMode else { return }
+		sleepSavedOutBoundMode = nil
+		ApiRequest.updateOutBoundMode(mode: mode) {
+			[weak self] _ in
+			ConnectionManager.closeAllConnection()
+			self?.syncConfig()
+		}
+	}
 }
 
 // MARK: Meta Menu
