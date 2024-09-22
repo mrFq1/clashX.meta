@@ -1,0 +1,14 @@
+<?xml version="1.0" standalone="yes"?>
+<rss xmlns:sparkle="http://www.andymatuschak.org/xml-namespaces/sparkle" version="2.0">
+    <channel>
+        <title>ClashX Meta</title>
+        <item>
+            <title>v1.4.0</title>
+            <pubDate>Sun, 22 Sep 2024 09:42:08 +0000</pubDate>
+            <sparkle:version>539</sparkle:version>
+            <sparkle:shortVersionString>v1.4.0</sparkle:shortVersionString>
+            <sparkle:minimumSystemVersion>11.0</sparkle:minimumSystemVersion>
+            <enclosure url="https://raw.githubusercontent.com/MetaCubeX/clashX.meta/refs/heads/sparkle/ClashX%20Meta%20v1.4.0.zip" length="37420990" type="application/octet-stream" sparkle:edSignature="Mcz4ODWyX2PIe9vWMGWCyJaPLuINmQio0vlttKWQRMcAcXNgHilBXh7iNFiiUoGjEYnm9Wb/R5xjbCcpRjt/Cg=="/>
+        </item>
+    </channel>
+</rss>
