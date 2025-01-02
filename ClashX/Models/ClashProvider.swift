@@ -31,22 +31,45 @@ class ClashProvider: Codable {
     enum ProviderType: String, Codable {
         case Proxy
         case String
-    }
-
-    enum ProviderVehicleType: String, Codable {
-        case HTTP
-        case File
-        case Compatible
         case Unknown
     }
 
     let name: ClashProviderName
     let proxies: [ClashProxy]
     let type: ProviderType
-    let vehicleType: ProviderVehicleType
-	let updatedAt: Date?
+    let vehicleType: ClashProviderVehicleType
+	let updatedAt: Date
 
     let subscriptionInfo: ClashProviderSubInfo?
+    
+    
+    private enum CodingKeys: String, CodingKey {
+        case name, proxies, type, vehicleType, updatedAt, subscriptionInfo
+    }
+    
+    required init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        name = try container.decode(ClashProviderName.self, forKey: .name)
+        proxies = try container.decode([ClashProxy].self, forKey: .proxies)
+        type = (try? container.decode(ProviderType.self, forKey: .type)) ?? .Unknown
+        vehicleType = try container.decode(ClashProviderVehicleType.self, forKey: .vehicleType)
+        updatedAt = (try? container.decode(Date.self, forKey: .updatedAt)) ?? .init(timeIntervalSince1970: 0)
+        subscriptionInfo = try? container.decode(ClashProviderSubInfo.self, forKey: .subscriptionInfo)
+    }
+}
+
+enum ClashProviderVehicleType: String, Codable, CaseIterable {
+    case HTTP
+    case File
+    case Compatible
+    case Inline
+    case Unknown
+    
+    init(from decoder: Decoder) throws {
+        let container = try decoder.singleValueContainer()
+        let rawString = try container.decode(String.self)
+        self = ClashProviderVehicleType.allCases.first(where: { $0.rawValue.caseInsensitiveCompare(rawString) == .orderedSame }) ?? .Unknown
+    }
 }
 
 class ClashProviderSubInfo: Codable {

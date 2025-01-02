@@ -34,13 +34,15 @@ class DBProxyGroup: ObservableObject, Identifiable {
 	}
 	
 	@Published var proxies: [DBProxy]
-	
 	@Published var currentProxy: DBProxy?
 	
+    @Published var hidden: Bool
+    
 	init(_ group: ClashProxy, resp: ClashProxyResp) {
 		name = group.name
 		type = group.type
 		now = group.now
+        hidden = group.hidden ?? false
 
 		proxies = group.all?.compactMap { name in
 			resp.proxiesMap[name]

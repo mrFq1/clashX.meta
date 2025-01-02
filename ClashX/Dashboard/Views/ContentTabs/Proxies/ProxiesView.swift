@@ -23,7 +23,7 @@ struct ProxiesView: View {
 	
     var body: some View {
 		NavigationView {
-			List(proxyStorage.groups, id: \.id) { group in
+            List(proxyStorage.groups.filter({ !$0.hidden }), id: \.id) { group in
 				ProxyGroupRowView(proxyGroup: group)
 			}
 			.introspect(.table, on: .macOS(.v12, .v13, .v14, .v15)) {

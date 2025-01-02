@@ -9,25 +9,30 @@ import SwiftUI
 struct RuleProvidersRowView: View {
 	
 	@ObservedObject var providerStorage: DBProviderStorage
+    @State var vehicleType: ClashProviderVehicleType
+    
 	@EnvironmentObject var searchString: ProxiesSearchString
-	
 	@State private var isUpdating = false
 	
 	var providers: [DBRuleProvider] {
+        var pp = [DBRuleProvider]()
 		if searchString.string.isEmpty {
-			return providerStorage.ruleProviders
+            pp = providerStorage.ruleProviders
 		} else {
-			return providerStorage.ruleProviders.filter {
+            pp = providerStorage.ruleProviders.filter {
 				$0.name.lowercased().contains(searchString.string.lowercased())
 			}
 		}
+        return pp.filter {
+            $0.vehicleType == vehicleType
+        }
 	}
-	
+    
     var body: some View {
 		NavigationLink {
 			contentView
 		} label: {
-			Text("Rule")
+            Text(vehicleType == .HTTP ? "Rule" : "Rule Inline")
 				.font(.system(size: 15))
 				.padding(EdgeInsets(top: 2, leading: 4, bottom: 2, trailing: 4))
 		}
@@ -42,13 +47,15 @@ struct RuleProvidersRowView: View {
 					}
 				}
 			} header: {
-				ProgressButton(
-					title: "Update All",
-					title2: "Updating",
-					iconName: "arrow.clockwise",
-					inProgress: $isUpdating) {
-						updateAll()	
-					}
+                if vehicleType == .HTTP {
+                    ProgressButton(
+                        title: "Update All",
+                        title2: "Updating",
+                        iconName: "arrow.clockwise",
+                        inProgress: $isUpdating) {
+                            updateAll()
+                        }
+                }
 			}
 			.padding()
 		}

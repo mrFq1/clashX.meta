@@ -37,33 +37,54 @@ struct ProvidersView: View {
 	
 	var listView: some View {
 		List {
-			if providerStorage.proxyProviders.isEmpty,
-			   providerStorage.ruleProviders.isEmpty {
+            let httpProxyProviders = providerStorage.proxyProviders.filter({ $0.vehicleType == .HTTP })
+            let inlineProxyProviders = providerStorage.proxyProviders.filter({ $0.vehicleType == .Inline })
+            
+            let httpRuleProviders = providerStorage.ruleProviders.filter({ $0.vehicleType == .HTTP })
+            let inlineRuleProviders = providerStorage.ruleProviders.filter({ $0.vehicleType == .Inline })
+            
+            if httpProxyProviders.isEmpty,
+               httpRuleProviders.isEmpty,
+               inlineRuleProviders.isEmpty {
 				Text("Empty")
 					.padding()
 			} else {
 				Section() {
-					if !providerStorage.proxyProviders.isEmpty {
+					if !httpProxyProviders.isEmpty {
 						ProxyProvidersRowView(providerStorage: providerStorage)
 					}
-					if !providerStorage.ruleProviders.isEmpty {
-						RuleProvidersRowView(providerStorage: providerStorage)
+					if !httpRuleProviders.isEmpty {
+                        RuleProvidersRowView(providerStorage: providerStorage, vehicleType: .HTTP)
 					}
+                    if !inlineRuleProviders.isEmpty {
+                        RuleProvidersRowView(providerStorage: providerStorage, vehicleType: .Inline)
+                    }
 				} header: {
 					Text("Providers")
 				}
 			}
 			
-			if !providerStorage.proxyProviders.isEmpty {
+            if httpProxyProviders.count > 0 {
 				Text("")
 				Section() {
-					ForEach(providerStorage.proxyProviders,id: \.id) {
+					ForEach(httpProxyProviders,id: \.id) {
 						ProviderRowView(proxyProvider: $0)
 					}
 				} header: {
 					Text("Proxy Provider")
 				}
 			}
+            
+            if inlineProxyProviders.count > 0 {
+                Text("")
+                Section() {
+                    ForEach(inlineProxyProviders,id: \.id) {
+                        ProviderRowView(proxyProvider: $0)
+                    }
+                } header: {
+                    Text("Proxy Provider Inline")
+                }
+            }
 		}
 		.introspect(.table, on: .macOS(.v12, .v13, .v14, .v15)) {
 			$0.refusesFirstResponder = true
@@ -74,18 +95,16 @@ struct ProvidersView: View {
 	
 	func loadProviders() {
 		ApiRequest.requestProxyProviderList { resp in
-			providerStorage.proxyProviders = 		resp.allProviders.values.filter {
-				$0.vehicleType == .HTTP
-			}.sorted {
+			providerStorage.proxyProviders = resp.allProviders.values.sorted {
 				$0.name < $1.name
 			}
 			.map(DBProxyProvider.init)
 		}
 		ApiRequest.requestRuleProviderList { resp in
-			providerStorage.ruleProviders = resp.allProviders.values.sorted {
-					$0.name < $1.name
-				}
-				.map(DBRuleProvider.init)
+            providerStorage.ruleProviders = resp.allProviders.values.sorted {
+                $0.name < $1.name
+            }
+            .map(DBRuleProvider.init)
 		}
 	}
 	

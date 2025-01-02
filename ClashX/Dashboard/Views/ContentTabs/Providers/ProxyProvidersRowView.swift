@@ -14,13 +14,17 @@ struct ProxyProvidersRowView: View {
 	@State private var isUpdating = false
 	
 	var providers: [DBProxyProvider] {
+        var pp = [DBProxyProvider]()
 		if searchString.string.isEmpty {
-			return providerStorage.proxyProviders
+            pp = providerStorage.proxyProviders
 		} else {
-			return providerStorage.proxyProviders.filter {
+            pp = providerStorage.proxyProviders.filter {
 				$0.name.lowercased().contains(searchString.string.lowercased())
 			}
 		}
+        return pp.filter {
+            $0.vehicleType == .HTTP
+        }
 	}
 	
     var body: some View {
@@ -52,7 +56,7 @@ struct ProxyProvidersRowView: View {
 	}
 	
 	var listView: some View {
-		ForEach(providers, id: \.id) { provider in
+        ForEach(providers, id: \.id) { provider in
 			ProxyProviderInfoView(provider: provider, withUpdateButton: true)
 		}
 	}
@@ -62,7 +66,7 @@ struct ProxyProvidersRowView: View {
 		
 		ApiRequest.updateAllProviders(for: .proxy) { _ in
 			ApiRequest.requestProxyProviderList { resp in
-				providerStorage.proxyProviders = 		resp.allProviders.values.filter {
+				providerStorage.proxyProviders = resp.allProviders.values.filter {
 					$0.vehicleType == .HTTP
 				}.sorted {
 					$0.name < $1.name

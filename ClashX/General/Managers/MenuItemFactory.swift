@@ -331,6 +331,10 @@ extension MenuItemFactory {
 
     static func refreshRuleProviderMenuItems(_ ruleProviders: [ClashRuleProvider]) {
         let app = AppDelegate.shared
+        
+        let ruleProviders = ruleProviders.filter {
+            $0.vehicleType == .HTTP
+        }
         let isEmpty = ruleProviders.count == 0
         app.ruleProvidersMenuItem.isEnabled = !isEmpty
 

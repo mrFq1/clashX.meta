@@ -24,9 +24,7 @@ struct RuleProviderView: View {
 			
 			HStack {
 				Text("\(provider.ruleCount) rules")
-				if let date = provider.updatedAt {
-					Text("Updated \(RelativeDateTimeFormatter().localizedString(for: date, relativeTo: Date()))")
-				}
+                Text("Updated \(RelativeDateTimeFormatter().localizedString(for: provider.updatedAt, relativeTo: Date()))")
 				Spacer()
 			}
 			.font(.system(size: 12))

@@ -21,7 +21,7 @@ class DBProxyProvider: ObservableObject, Identifiable {
 	@Published var name: ClashProviderName
 	@Published var proxies: [DBProxy]
 	@Published var type: ClashProvider.ProviderType
-	@Published var vehicleType: ClashProvider.ProviderVehicleType
+	@Published var vehicleType: ClashProviderVehicleType
 
 	@Published var trafficInfo: String
 	@Published var trafficPercentage: String
@@ -69,13 +69,9 @@ class DBProxyProvider: ObservableObject, Identifiable {
 			trafficPercentage = "0.0%"
 		}
 		
-		if let updatedAt = provider.updatedAt {
-			let formatter = RelativeDateTimeFormatter()
-			formatter.unitsStyle = .abbreviated
-			self.updatedAt = formatter.localizedString(for: updatedAt, relativeTo: Date())
-		} else {
-			self.updatedAt = ""
-		}
+        let formatter = RelativeDateTimeFormatter()
+        formatter.unitsStyle = .abbreviated
+        self.updatedAt = formatter.localizedString(for: provider.updatedAt, relativeTo: Date())
 	}
 	
 	func updateInfo(_ new: DBProxyProvider) {
@@ -94,7 +90,8 @@ class DBRuleProvider: ObservableObject, Identifiable {
 	@Published var ruleCount: Int
 	@Published var behavior: String
 	@Published var type: String
-	@Published var updatedAt: Date?
+    @Published var vehicleType: ClashProviderVehicleType
+	@Published var updatedAt: Date
 	
 	init(provider: ClashRuleProvider) {
 		id = UUID().uuidString
@@ -103,6 +100,7 @@ class DBRuleProvider: ObservableObject, Identifiable {
 		ruleCount = provider.ruleCount
 		behavior = provider.behavior
 		type = provider.type
+        vehicleType = provider.vehicleType
 		updatedAt = provider.updatedAt
 	}
 }
