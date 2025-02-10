@@ -23,7 +23,7 @@ jobs:
       uses: robinraju/release-downloader@v1.10
       with:
         repository: 'MetaCubeX/mihomo'
-        tag: "v1.19.1"
+        tag: "v1.19.2"
         fileName: ".*darwin.*64-v.*.gz"
 
         # releaseId: "62870807"
