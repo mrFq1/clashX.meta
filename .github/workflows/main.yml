@@ -88,8 +88,10 @@ jobs:
 
         cp "ClashX Meta.zip" "sparkle-repo/ClashX Meta $GITHUB_REF_NAME.zip"
         
-        brew install sparkle
-        echo '${{ secrets.ED_KEY }}' | $(brew --prefix)/Caskroom/sparkle/2.*/bin/generate_appcast --maximum-deltas 2 --ed-key-file - sparkle-repo
+        gh release download -R sparkle-project/Sparkle -p 'Sparkle-*.tar.xz' -D /tmp --clobber
+        tar -xJf /tmp/Sparkle-*.tar.xz -C /tmp --strip-components=1 bin/generate_appcast
+        
+        echo '${{ secrets.ED_KEY }}' | /tmp/bin/generate_appcast --maximum-deltas 2 --ed-key-file - sparkle-repo
         
         cd sparkle-repo
         git checkout --orphan temp-sparkle
