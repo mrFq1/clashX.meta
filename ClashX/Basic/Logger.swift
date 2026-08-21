@@ -150,8 +150,28 @@ class Logger {
         cleanupLogTask = Task {
             while !Task.isCancelled {
                 try? await Task.sleep(seconds: 5 * 60)
-                try? FileHandle(forWritingTo: URL(fileURLWithPath: coreLogPath)).truncate(atOffset: 0)
+                try? Self.trimLog(atPath: coreLogPath, maxSize: 1024 * 1024)
             }
         }
+    }
+
+    private static func trimLog(atPath path: String, maxSize: Int) throws {
+        let url = URL(fileURLWithPath: path)
+        let size = (try FileManager.default.attributesOfItem(atPath: path)[.size] as? NSNumber)?.uint64Value ?? 0
+        guard size > UInt64(maxSize) else { return }
+
+        let handle = try FileHandle(forUpdating: url)
+        defer { try? handle.close() }
+
+        try handle.seek(toOffset: size - UInt64(maxSize))
+        var tail = try handle.read(upToCount: maxSize) ?? Data()
+
+        if let firstNewline = tail.firstIndex(of: 0x0A) {
+            tail.removeSubrange(0...firstNewline)
+        }
+
+        try handle.seek(toOffset: 0)
+        try handle.write(contentsOf: tail)
+        try handle.truncate(atOffset: UInt64(tail.count))
     }
 }
